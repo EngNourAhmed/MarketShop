@@ -198,26 +198,25 @@
             </div>
         </div>
 
-        <div class="overflow-hidden">
-           
-
-            <div class="swiper categories-swiper">
-                <div class="swiper-wrapper">
+        <div class="w-full overflow-hidden mb-6">
+            <div class="flex overflow-x-auto hide-scroll-bar pb-4">
+                <div class="flex flex-nowrap gap-4 md:gap-6 px-1">
                     @foreach ($categories ?? [] as $cat)
-                        <div class="swiper-slide flex flex-col items-center gap-2 text-center w-24 md:w-28">
-                            <a href="{{ route('shop.categories.show', $cat->slug) }}">
-                                <div class="flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full bg-gray-100 dark:bg-slate-800 overflow-hidden"
+                        <div class="flex-shrink-0 w-20 md:w-24 group">
+                            <a href="{{ route('shop.categories.show', $cat->slug) }}" class="flex flex-col items-center justify-center gap-2">
+                                <div class="flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden shadow-sm group-hover:shadow-md transition-all group-hover:scale-105 border border-gray-100 dark:border-slate-700"
                                     style="background-color: {{ $cat->bg_color ?? '#f3f4f6' }};">
                                     @if (!empty($cat->image))
                                         <img src="{{ \App\Helpers\CurrencyHelper::imageUrl($cat->image) }}" alt="category"
                                             class="w-full h-full object-cover" />
                                     @else
                                         <i data-lucide="{{ $cat->icon ?? 'grid-2x2' }}"
-                                            class="w-8 h-8 text-gray-700 dark:text-gray-200"></i>
+                                            class="w-8 h-8 text-gray-700 dark:text-gray-300"></i>
                                     @endif
                                 </div>
-                                <span
-                                    class="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300">{{ $isAr ? $cat->name_ar ?? $cat->name_en : $cat->name_en ?? $cat->name_ar }}</span>
+                                <span class="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300 text-center w-full px-1 line-clamp-2 leading-tight">
+                                    {{ $isAr ? $cat->name_ar ?? $cat->name_en : $cat->name_en ?? $cat->name_ar }}
+                                </span>
                             </a>
                         </div>
                     @endforeach
@@ -497,29 +496,7 @@
                 });
             }
 
-                // Categories Swiper
-                const categoriesSwiperEl = document.querySelector('.categories-swiper');
-                if (categoriesSwiperEl) {
-                    try {
-                        new Swiper('.categories-swiper', {
-                            slidesPerView: 4,
-                            spaceBetween: 20,
-                            freeMode: true,
-                            breakpoints: {
-                                768: {
-                                    slidesPerView: 6,
-                                    spaceBetween: 20,
-                                },
-                                1024: {
-                                    slidesPerView: 8,
-                                    spaceBetween: 20,
-                                },
-                            },
-                        });
-                    } catch (error) {
-                        console.error('Categories Swiper initialization failed:', error);
-                    }
-                }
+                // Note: Categories Swiper initialization removed as we now use native CSS horizontal scroll
             }
         });
     </script>
