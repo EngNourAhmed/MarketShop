@@ -4,6 +4,14 @@
 @push('head')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
+        .hide-scroll-bar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .hide-scroll-bar::-webkit-scrollbar {
+            display: none;
+        }
 
  #heroCarousel.hero-carousel {
     position: relative;
