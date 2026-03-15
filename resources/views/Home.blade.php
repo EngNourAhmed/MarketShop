@@ -448,26 +448,27 @@
             </div>
 
         <div class="w-full mb-8">
-            <div class="flex flex-wrap items-start justify-center gap-y-8 gap-x-4 md:gap-x-10 px-2">
-                @foreach ($categories ?? [] as $cat)
-                    <div class="group">
-                        <a href="{{ route('shop.categories.show', $cat->slug) }}" class="flex flex-col items-center justify-center gap-3">
-                            <div class="flex items-center justify-center w-16 h-16 md:w-24 md:h-24 rounded-full overflow-hidden shadow-sm group-hover:shadow-lg transition-all group-hover:scale-110 border-2 border-white dark:border-slate-700"
-                                style="background-color: {{ $cat->bg_color ?? '#f3f4f6' }};">
-                                @if (!empty($cat->image))
-                                    <img src="{{ \App\Helpers\CurrencyHelper::imageUrl($cat->image) }}" alt="category"
-                                        class="w-full h-full object-cover" />
-                                @else
-                                    <i data-lucide="{{ $cat->icon ?? 'grid-2x2' }}"
-                                        class="w-8 h-8 md:w-12 md:h-12 text-gray-700 dark:text-gray-300"></i>
-                                @endif
-                            </div>
-                            <span class="text-xs md:text-base font-bold text-gray-800 dark:text-gray-200 text-center max-w-[80px] md:max-w-[100px] line-clamp-2 leading-tight">
-                                {{ $isAr ? $cat->name_ar ?? $cat->name_en : $cat->name_en ?? $cat->name_ar }}
-                            </span>
-                        </a>
-                    </div>
-                @endforeach
+            <div class="swiper-container categories-swiper">
+                <div class="swiper-wrapper">
+                    @foreach ($categories ?? [] as $cat)
+                        <div class="swiper-slide list-none">
+                            <a href="{{ route('shop.categories.show', $cat->slug) }}" class="flex flex-col items-center justify-center gap-3">
+                                <div class="flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden transition-all hover:scale-105 bg-[#1C2331] dark:bg-[#1C2331]">
+                                    @if (!empty($cat->image))
+                                        <img src="{{ \App\Helpers\CurrencyHelper::imageUrl($cat->image) }}" alt="category"
+                                            class="w-full h-full object-cover" />
+                                    @else
+                                        <i data-lucide="{{ $cat->icon ?? 'grid-2x2' }}"
+                                            class="w-8 h-8 md:w-10 md:h-10 text-gray-200"></i>
+                                    @endif
+                                </div>
+                                <span class="text-sm md:text-base font-bold text-gray-800 dark:text-gray-200 text-center max-w-[90px] md:max-w-[100px] truncate leading-tight">
+                                    {{ $isAr ? $cat->name_ar ?? $cat->name_en : $cat->name_en ?? $cat->name_ar }}
+                                </span>
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </div>
 
