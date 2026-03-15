@@ -497,7 +497,7 @@
                                     data-product-id="{{ $product->id }}"
                                     data-name-en="{{ $product->name_en ?? $product->name }}"
                                     data-name-ar="{{ $product->name_ar ?? $product->name }}"
-                                    data-image="{{ !empty($product->image) ? asset('storage/' . $product->image) : asset('apple-touch-icon.png') }}"
+                                    data-image="{{ \App\Helpers\CurrencyHelper::imageUrl($product->image) }}"
                                     data-description="{{ $product->description ?? '' }}"
                                     data-description-ar="{{ $product->description_ar ?? '' }}"
                                     data-description-en="{{ $product->description_en ?? '' }}"
@@ -511,7 +511,7 @@
                                     data-supplier-price="{{ (string) ($supplier->pivot->price ?? '') }}">
                                         <div class="flex items-center justify-center h-24 md:h-32 mb-2 font-semibold text-gray-500 bg-gray-200 rounded-lg dark:bg-gray-700 dark:text-gray-400 overflow-hidden">
                                             @if(!empty($product->image))
-                                                <img src="{{ asset('storage/' . $product->image) }}" alt="product" class="w-full h-full object-cover" />
+                                                <img src="{{ \App\Helpers\CurrencyHelper::imageUrl($product->image) }}" alt="product" class="w-full h-full object-cover" />
                                             @else
                                                 <img src="{{ asset('apple-touch-icon.png') }}" alt="default" class="w-full h-full object-cover" />
                                             @endif
@@ -550,7 +550,7 @@
                                     data-product-id="{{ $product->id }}"
                                     data-name-en="{{ $product->name_en ?? $product->name }}"
                                     data-name-ar="{{ $product->name_ar ?? $product->name }}"
-                                    data-image="{{ !empty($product->image) ? asset('storage/' . $product->image) : asset('apple-touch-icon.png') }}"
+                                    data-image="{{ \App\Helpers\CurrencyHelper::imageUrl($product->image) }}"
                                     data-description="{{ $product->description ?? '' }}"
                                     data-description-ar="{{ $product->description_ar ?? '' }}"
                                     data-description-en="{{ $product->description_en ?? '' }}"
@@ -564,7 +564,7 @@
                                     data-supplier-price="{{ (string) ($supplier->pivot->price ?? '') }}">
                                     <div class="flex items-center justify-center h-24 md:h-32 mb-2 font-semibold text-gray-500 bg-gray-200 rounded-lg dark:bg-gray-700 dark:text-gray-400 overflow-hidden">
                                         @if(!empty($product->image))
-                                            <img src="{{ asset('storage/' . $product->image) }}" alt="product" class="w-full h-full object-cover" />
+                                    <img src="{{ \App\Helpers\CurrencyHelper::imageUrl($product->image) }}" alt="product" class="w-full h-full object-cover" />
                                         @else
                                             <img src="{{ asset('apple-touch-icon.png') }}" alt="default" class="w-full h-full object-cover" />
                                         @endif

@@ -270,7 +270,7 @@
                 @php($firstItem = $items->first())
                 @php($product = $firstItem?->product)
                 @php($title = $product ? ($isAr ? ($product->name_ar ?? $product->name) : ($product->name_en ?? $product->name)) : (($isAr ? 'اوردر' : 'Order') . ' ' . ($order->order_code ?? '')))
-                @php($imgUrl = $product && !empty($product->image) ? asset('storage/' . $product->image) : asset('apple-touch-icon.png'))
+                @php($imgUrl = \App\Helpers\CurrencyHelper::imageUrl($product->image ?? null))
                 @php($factory = $product?->suppliers?->firstWhere('type', 'factory'))
                 @php($vendor = $product?->suppliers?->firstWhere('type', 'vendor'))
                 @php($suppliersForModal = ($product?->suppliers ?? collect())->map(fn($s) => [

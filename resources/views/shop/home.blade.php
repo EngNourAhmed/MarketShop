@@ -209,7 +209,7 @@
                                 <div class="flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full bg-gray-100 dark:bg-slate-800 overflow-hidden"
                                     style="background-color: {{ $cat->bg_color ?? '#f3f4f6' }};">
                                     @if (!empty($cat->image))
-                                        <img src="{{ asset('storage/' . $cat->image) }}" alt="category"
+                                        <img src="{{ \App\Helpers\CurrencyHelper::imageUrl($cat->image) }}" alt="category"
                                             class="w-full h-full object-cover" />
                                     @else
                                         <i data-lucide="{{ $cat->icon ?? 'grid-2x2' }}"
@@ -273,7 +273,7 @@
                             data-name-ar="{{ $product->name_ar ?? $product->name }}"
                             data-description-en="{{ $product->description_en ?? $product->description }}"
                             data-description-ar="{{ $product->description_ar ?? $product->description }}"
-                            data-image="{{ !empty($product->image) ? asset('storage/' . $product->image) : asset('apple-touch-icon.png') }}"
+                            data-image="{{ \App\Helpers\CurrencyHelper::imageUrl($product->image) }}"
                             data-suppliers='@json($suppliersForModal)'
                             data-pricing-tiers='@json($pricingTiersForModal)'
                             data-colors="{{ $colorsStr }}"
@@ -281,13 +281,8 @@
                             
                             <!-- Product Image Container -->
                             <div class="w-full h-24 rounded-2xl overflow-hidden bg-gray-100 border border-gray-200 dark:bg-slate-800/60 dark:border-slate-700">
-                                @if (!empty($product->image))
-                                    <img src="{{ asset('storage/' . $product->image) }}" alt="product"
+                                    <img src="{{ \App\Helpers\CurrencyHelper::imageUrl($product->image) }}" alt="product"
                                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                                @else
-                                    <img src="{{ asset('apple-touch-icon.png') }}" alt="default"
-                                        class="w-full h-full object-cover" />
-                                @endif
                             </div>
 
                             <!-- Product Name -->
@@ -405,7 +400,7 @@
                         data-product-id="{{ $product->id }}"
                         data-name-en="{{ $product->name_en ?? $product->name }}"
                         data-name-ar="{{ $product->name_ar ?? $product->name }}"
-                        data-image="{{ !empty($product->image) ? asset('storage/' . $product->image) : asset('apple-touch-icon.png') }}"
+                        data-image="{{ \App\Helpers\CurrencyHelper::imageUrl($product->image) }}"
                         data-description="{{ $product->description ?? '' }}"
                         data-description-ar="{{ $product->description_ar ?? '' }}"
                         data-description-en="{{ $product->description_en ?? '' }}"
@@ -422,13 +417,8 @@
 
                         <div
                              class="w-full h-24 rounded-2xl overflow-hidden bg-gray-100 border border-gray-200 dark:bg-slate-800/60 dark:border-slate-700">
-                            @if (!empty($product->image))
-                                <img src="{{ asset('storage/' . $product->image) }}" alt="product"
-                                    class="w-full h-full object-cover" />
-                            @else
-                                <img src="{{ asset('apple-touch-icon.png') }}" alt="default"
-                                    class="w-full h-full object-cover" />
-                            @endif
+                            <img src="{{ \App\Helpers\CurrencyHelper::imageUrl($product->image) }}" alt="product"
+                                class="w-full h-full object-cover" />
                         </div>
 
                         <div

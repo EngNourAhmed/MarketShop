@@ -66,4 +66,23 @@ class CurrencyHelper
         
         return session('lang') === 'ar' ? $country->currency_symbol : $country->currency_code;
     }
+
+    /**
+     * Resolve a product/category image URL.
+     * If the stored value is an external URL (http/https), return as-is.
+     * Otherwise, return asset('storage/path').
+     */
+    public static function imageUrl(?string $path, ?string $fallback = null): string
+    {
+        if (empty($path)) {
+            return $fallback ?? asset('apple-touch-icon.png');
+        }
+
+        // Already a full external URL
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return $path;
+        }
+
+        return asset('storage/' . $path);
+    }
 }
