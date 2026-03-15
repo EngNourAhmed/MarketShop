@@ -17,16 +17,16 @@ class DummyDataSeeder extends Seeder
         DB::table('categories')->truncate();
 
         $categories = [
-            ['name_ar' => 'إلكترونيات',         'name_en' => 'Electronics',       'slug' => 'electronics',      'icon' => 'cpu',        'image' => 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=400', 'bg_color' => '#3B82F6'],
-            ['name_ar' => 'ملابس',               'name_en' => 'Clothing',           'slug' => 'clothing',          'icon' => 'shirt',      'image' => 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=400', 'bg_color' => '#EC4899'],
+        ['name_ar' => 'إلكترونيات',         'name_en' => 'Electronics',       'slug' => 'electronics',      'icon' => 'cpu',        'image' => 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=400', 'bg_color' => '#3B82F6'],
+            ['name_ar' => 'ملابس',               'name_en' => 'Clothing',           'slug' => 'clothing',          'icon' => 'tag',        'image' => 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=400', 'bg_color' => '#EC4899'],
             ['name_ar' => 'أدوات منزلية',         'name_en' => 'Home & Kitchen',     'slug' => 'home-kitchen',      'icon' => 'home',       'image' => 'https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=400', 'bg_color' => '#F59E0B'],
-            ['name_ar' => 'رياضة',               'name_en' => 'Sports',             'slug' => 'sports',            'icon' => 'dumbbell',   'image' => 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400', 'bg_color' => '#10B981'],
+            ['name_ar' => 'رياضة',               'name_en' => 'Sports',             'slug' => 'sports',            'icon' => 'activity',   'image' => 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400', 'bg_color' => '#10B981'],
             ['name_ar' => 'إكسسوارات',            'name_en' => 'Accessories',        'slug' => 'accessories',       'icon' => 'watch',      'image' => 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400', 'bg_color' => '#8B5CF6'],
-            ['name_ar' => 'عطور ومستحضرات',       'name_en' => 'Beauty & Fragrance', 'slug' => 'beauty-fragrance',  'icon' => 'sparkles',   'image' => 'https://images.unsplash.com/photo-1541643600914-78b084683702?w=400', 'bg_color' => '#F43F5E'],
+            ['name_ar' => 'عطور ومستحضرات',       'name_en' => 'Beauty & Fragrance', 'slug' => 'beauty-fragrance',  'icon' => 'heart',      'image' => 'https://images.unsplash.com/photo-1541643600914-78b084683702?w=400', 'bg_color' => '#F43F5E'],
             ['name_ar' => 'أجهزة منزلية',          'name_en' => 'Appliances',         'slug' => 'appliances',        'icon' => 'zap',        'image' => 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400', 'bg_color' => '#06B6D4'],
-            ['name_ar' => 'حقائب وشنط',           'name_en' => 'Bags & Luggage',     'slug' => 'bags-luggage',      'icon' => 'briefcase',  'image' => 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400', 'bg_color' => '#D97706'],
-            ['name_ar' => 'مكتبية وقرطاسية',      'name_en' => 'Office & Stationery','slug' => 'office-stationery', 'icon' => 'pen-tool',   'image' => 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=400', 'bg_color' => '#64748B'],
-            ['name_ar' => 'ألعاب وترفيه',          'name_en' => 'Toys & Entertainment','slug' => 'toys',             'icon' => 'gamepad-2',  'image' => 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400', 'bg_color' => '#EF4444'],
+            ['name_ar' => 'حقائب وشنط',           'name_en' => 'Bags & Luggage',     'slug' => 'bags-luggage',      'icon' => 'shopping-bag','image' => 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400', 'bg_color' => '#D97706'],
+            ['name_ar' => 'مكتبية وقرطاسية',      'name_en' => 'Office & Stationery','slug' => 'office-stationery', 'icon' => 'edit-3',     'image' => 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=400', 'bg_color' => '#64748B'],
+            ['name_ar' => 'ألعاب وترفيه',          'name_en' => 'Toys & Entertainment','slug' => 'toys',             'icon' => 'smile',      'image' => 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400', 'bg_color' => '#EF4444'],
         ];
 
         foreach ($categories as &$cat) {

@@ -68,6 +68,19 @@
             /* Firefox */
         }
 
+        /* Categories swiper fix */
+        .categories-swiper {
+            overflow: visible !important;
+        }
+        .categories-swiper .swiper-wrapper {
+            align-items: flex-start;
+        }
+        .categories-swiper .swiper-slide {
+            height: auto !important;
+            display: flex;
+            justify-content: center;
+        }
+
         .expanding-clone {
             position: fixed;
             z-index: 99999;
@@ -765,14 +778,22 @@
         });
 
         new Swiper('.categories-swiper', {
-            slidesPerView: 4.6, // show ~3 and a half on mobile
-            spaceBetween: 16,
+            slidesPerView: 4.2,
+            spaceBetween: 12,
             freeMode: true,
+            observer: true,
+            observeParents: true,
             breakpoints: {
-                640: { slidesPerView: 4.8 },
-                768: { slidesPerView: 5 },
-                1024: { slidesPerView: 6 },
-                1280: { slidesPerView: 12 },
+                480: { slidesPerView: 5, spaceBetween: 14 },
+                640: { slidesPerView: 5.5, spaceBetween: 16 },
+                768: { slidesPerView: 6, spaceBetween: 18 },
+                1024: { slidesPerView: 7, spaceBetween: 20 },
+                1280: { slidesPerView: 10, spaceBetween: 24 },
+            },
+            on: {
+                init: function () {
+                    lucide.createIcons();
+                },
             },
         });
 
