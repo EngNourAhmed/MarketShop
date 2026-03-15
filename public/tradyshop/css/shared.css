@@ -1,0 +1,38 @@
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #2d3748;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #718096;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
+}
+
+#expense-modal-content,
+#add-expense-modal-content,
+#delete-confirm-modal-content,
+#supplier-modal-content,
+#redirect-order-modal-content {
+  transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+}

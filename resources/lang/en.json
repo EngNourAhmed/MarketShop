@@ -1,0 +1,12 @@
+{
+    "قيد التنفيذ": "Processing",
+    "تم التوصيل": "Delivered",
+    "ملغي": "Cancelled",
+    "card": "Card",
+    "wallet": "Wallet",
+    "cash": "Cash",
+    "cod": "Cash on Delivery",
+    "pending": "Pending",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled"
+}
