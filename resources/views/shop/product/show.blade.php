@@ -444,8 +444,8 @@
                             @php($spSupplier = ($sp->suppliers ?? collect())->firstWhere('type', 'vendor'))
                             @php($spFactoryPrice = (float) ($spFactory->pivot->price ?? 0))
                             @php($spSupplierPrice = (float) ($spSupplier->pivot->price ?? 0))
-                            @php($spFactoryUsd = (int) round($spFactoryPrice / $usdRate))
-                            @php($spSupplierUsd = (int) round($spSupplierPrice / $usdRate))
+                            @php($spFactoryUsd = (int) round($spFactoryPrice / max(1, $usdRate ?? 1)))
+                            @php($spSupplierUsd = (int) round($spSupplierPrice / max(1, $usdRate ?? 1)))
                             @php($spFactoryPriceK = $spFactoryPrice >= 1000 ? (string) round($spFactoryPrice / 1000) . 'k' : number_format($spFactoryPrice, 0, '.', ','))
                             @php($spSupplierPriceK = $spSupplierPrice >= 1000 ? (string) round($spSupplierPrice / 1000) . 'k' : number_format($spSupplierPrice, 0, '.', ','))
                             @php($spSuppliersForModal = ($sp->suppliers ?? collect())->map(fn($s) => [
