@@ -464,7 +464,7 @@
                                         class="flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full dark:bg-gray-800 overflow-hidden"
                                         style="background-color: {{ $cat->bg_color ?? '#f3f4f6' }};">
                                         @if(!empty($cat->image))
-                                            <img src="{{ asset('storage/' . $cat->image) }}" alt="category" class="w-full h-full object-cover" />
+                                            <img src="{{ \App\Helpers\CurrencyHelper::imageUrl($cat->image) }}" alt="category" class="w-full h-full object-cover" />
                                         @else
                                             <i data-lucide="{{ $cat->icon ?? 'grid-2x2' }}" class="w-8 h-8 text-gray-700 dark:text-gray-200"></i>
                                         @endif
