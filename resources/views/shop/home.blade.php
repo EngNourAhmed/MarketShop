@@ -4,14 +4,6 @@
 @push('head')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
-        .hide-scroll-bar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        .hide-scroll-bar::-webkit-scrollbar {
-            display: none;
-        }
 
  #heroCarousel.hero-carousel {
     position: relative;
@@ -206,29 +198,26 @@
             </div>
         </div>
 
-        <div class="w-full overflow-hidden mb-6">
-            <div class="flex overflow-x-auto hide-scroll-bar pb-4">
-                <div class="flex flex-nowrap gap-4 md:gap-6 px-1">
+        <div class="overflow-hidden">
+           
+
+            <div class="swiper categories-swiper">
+                <div class="swiper-wrapper">
                     @foreach ($categories ?? [] as $cat)
-                        @php($catIcon = $cat->icon ?? 'grid-2x2')
-                        @php($catBg = $cat->bg_color ?? '#f3f4f6')
-                        <div class="flex-shrink-0 w-20 md:w-24 group">
-                            <a href="{{ route('shop.categories.show', $cat->slug) }}" class="flex flex-col items-center justify-center gap-2">
-                                <div class="relative flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden shadow-sm group-hover:shadow-md transition-all group-hover:scale-105 border border-gray-100 dark:border-slate-700"
-                                    style="background-color: {{ $catBg }};">
+                        <div class="swiper-slide flex flex-col items-center gap-2 text-center w-24 md:w-28">
+                            <a href="{{ route('shop.categories.show', $cat->slug) }}">
+                                <div class="flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full bg-gray-100 dark:bg-slate-800 overflow-hidden"
+                                    style="background-color: {{ $cat->bg_color ?? '#f3f4f6' }};">
                                     @if (!empty($cat->image))
-                                        <img src="{{ \App\Helpers\CurrencyHelper::imageUrl($cat->image) }}"
-                                            alt="{{ $cat->name_en }}"
-                                            class="cat-img w-full h-full object-cover"
-                                            onerror="this.style.display='none'; var ic=document.createElement('i'); ic.setAttribute('data-lucide','{{ $catIcon }}'); ic.className='w-8 h-8 text-white'; this.parentNode.appendChild(ic); if(window.lucide){lucide.createIcons();}" />
+                                        <img src="{{ asset('storage/' . $cat->image) }}" alt="category"
+                                            class="w-full h-full object-cover" />
                                     @else
-                                        <i data-lucide="{{ $catIcon }}"
-                                            class="w-8 h-8 text-white"></i>
+                                        <i data-lucide="{{ $cat->icon ?? 'grid-2x2' }}"
+                                            class="w-8 h-8 text-gray-700 dark:text-gray-200"></i>
                                     @endif
                                 </div>
-                                <span class="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300 text-center w-full px-1 line-clamp-2 leading-tight">
-                                    {{ $isAr ? $cat->name_ar ?? $cat->name_en : $cat->name_en ?? $cat->name_ar }}
-                                </span>
+                                <span
+                                    class="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300">{{ $isAr ? $cat->name_ar ?? $cat->name_en : $cat->name_en ?? $cat->name_ar }}</span>
                             </a>
                         </div>
                     @endforeach
@@ -273,8 +262,8 @@
                         @php($colorsStr = collect((array) ($product->colors ?? []))->filter(fn($v) => trim((string) $v) !== '')->implode(','))
                         @php($sizesStr = collect((array) ($product->sizes ?? []))->filter(fn($v) => trim((string) $v) !== '')->implode(','))
                         
-                        @php($avgRatingVal = (float) ($product->ratings_avg_rating ?? 0))
-                        @php($ratingsCountVal = (int) ($product->ratings_count ?? 0))
+                        @php($avgRatingVal = (float) ($product->reviews_avg_rating ?? 0))
+                        @php($ratingsCountVal = (int) ($product->reviews_count ?? 0))
 
                         <!-- Product Card (Updated Design to match Featured) -->
                         <div class="group relative p-3 rounded-2xl bg-white border border-gray-200 shadow-sm hover:cursor-pointer dark:bg-gradient-to-b dark:from-slate-900 dark:to-slate-950 dark:border-slate-800 dark:shadow-xl hover:border-rose-500/30 transition-all duration-300"
@@ -284,7 +273,7 @@
                             data-name-ar="{{ $product->name_ar ?? $product->name }}"
                             data-description-en="{{ $product->description_en ?? $product->description }}"
                             data-description-ar="{{ $product->description_ar ?? $product->description }}"
-                            data-image="{{ \App\Helpers\CurrencyHelper::imageUrl($product->image) }}"
+                            data-image="{{ !empty($product->image) ? asset('storage/' . $product->image) : asset('apple-touch-icon.png') }}"
                             data-suppliers='@json($suppliersForModal)'
                             data-pricing-tiers='@json($pricingTiersForModal)'
                             data-colors="{{ $colorsStr }}"
@@ -292,8 +281,13 @@
                             
                             <!-- Product Image Container -->
                             <div class="w-full h-24 rounded-2xl overflow-hidden bg-gray-100 border border-gray-200 dark:bg-slate-800/60 dark:border-slate-700">
-                                    <img src="{{ \App\Helpers\CurrencyHelper::imageUrl($product->image) }}" alt="product"
+                                @if (!empty($product->image))
+                                    <img src="{{ asset('storage/' . $product->image) }}" alt="product"
                                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                @else
+                                    <img src="{{ asset('apple-touch-icon.png') }}" alt="default"
+                                        class="w-full h-full object-cover" />
+                                @endif
                             </div>
 
                             <!-- Product Name -->
@@ -411,7 +405,7 @@
                         data-product-id="{{ $product->id }}"
                         data-name-en="{{ $product->name_en ?? $product->name }}"
                         data-name-ar="{{ $product->name_ar ?? $product->name }}"
-                        data-image="{{ \App\Helpers\CurrencyHelper::imageUrl($product->image) }}"
+                        data-image="{{ !empty($product->image) ? asset('storage/' . $product->image) : asset('apple-touch-icon.png') }}"
                         data-description="{{ $product->description ?? '' }}"
                         data-description-ar="{{ $product->description_ar ?? '' }}"
                         data-description-en="{{ $product->description_en ?? '' }}"
@@ -428,8 +422,13 @@
 
                         <div
                              class="w-full h-24 rounded-2xl overflow-hidden bg-gray-100 border border-gray-200 dark:bg-slate-800/60 dark:border-slate-700">
-                            <img src="{{ \App\Helpers\CurrencyHelper::imageUrl($product->image) }}" alt="product"
-                                class="w-full h-full object-cover" />
+                            @if (!empty($product->image))
+                                <img src="{{ asset('storage/' . $product->image) }}" alt="product"
+                                    class="w-full h-full object-cover" />
+                            @else
+                                <img src="{{ asset('apple-touch-icon.png') }}" alt="default"
+                                    class="w-full h-full object-cover" />
+                            @endif
                         </div>
 
                         <div
@@ -508,7 +507,29 @@
                 });
             }
 
-                // Note: Categories Swiper initialization removed as we now use native CSS horizontal scroll
+                // Categories Swiper
+                const categoriesSwiperEl = document.querySelector('.categories-swiper');
+                if (categoriesSwiperEl) {
+                    try {
+                        new Swiper('.categories-swiper', {
+                            slidesPerView: 4,
+                            spaceBetween: 20,
+                            freeMode: true,
+                            breakpoints: {
+                                768: {
+                                    slidesPerView: 6,
+                                    spaceBetween: 20,
+                                },
+                                1024: {
+                                    slidesPerView: 8,
+                                    spaceBetween: 20,
+                                },
+                            },
+                        });
+                    } catch (error) {
+                        console.error('Categories Swiper initialization failed:', error);
+                    }
+                }
             }
         });
     </script>
