@@ -62,7 +62,8 @@ class CustomerHomeController extends Controller
             $ids = $bestSellerProductIds->map(fn ($id) => (int) $id)->values()->all();
 
             $bestSellers = Product::with(['suppliers' => function ($q) {
-                $q->select('suppliers.id', 'suppliers.name', 'suppliers.type');
+                $q->select('suppliers.id', 'suppliers.name', 'suppliers.type')
+                  ->withPivot('price', 'unit_price', 'quantity');
             }])
                 ->with('pricingTiers')
                 ->withAvg('ratings', 'rating')
@@ -84,8 +85,23 @@ class CustomerHomeController extends Controller
                 ->get();
         }
 
+        // Fallback: show latest products when no delivered orders exist
+        if ($bestSellers->isEmpty()) {
+            $bestSellers = Product::with(['suppliers' => function ($q) {
+                $q->select('suppliers.id', 'suppliers.name', 'suppliers.type')
+                  ->withPivot('price', 'unit_price', 'quantity');
+            }])
+                ->with('pricingTiers')
+                ->withAvg('ratings', 'rating')
+                ->withCount('ratings')
+                ->latest()
+                ->limit(12)
+                ->get();
+        }
+
         $homeProductsQuery = Product::with(['suppliers' => function ($q) {
-            $q->select('suppliers.id', 'suppliers.name', 'suppliers.type');
+            $q->select('suppliers.id', 'suppliers.name', 'suppliers.type')
+              ->withPivot('price', 'unit_price', 'quantity');
         }])
             ->with('pricingTiers')
             ->withAvg('ratings', 'rating')

@@ -262,8 +262,8 @@
                         @php($colorsStr = collect((array) ($product->colors ?? []))->filter(fn($v) => trim((string) $v) !== '')->implode(','))
                         @php($sizesStr = collect((array) ($product->sizes ?? []))->filter(fn($v) => trim((string) $v) !== '')->implode(','))
                         
-                        @php($avgRatingVal = (float) ($product->reviews_avg_rating ?? 0))
-                        @php($ratingsCountVal = (int) ($product->reviews_count ?? 0))
+                        @php($avgRatingVal = (float) ($product->ratings_avg_rating ?? 0))
+                        @php($ratingsCountVal = (int) ($product->ratings_count ?? 0))
 
                         <!-- Product Card (Updated Design to match Featured) -->
                         <div class="group relative p-3 rounded-2xl bg-white border border-gray-200 shadow-sm hover:cursor-pointer dark:bg-gradient-to-b dark:from-slate-900 dark:to-slate-950 dark:border-slate-800 dark:shadow-xl hover:border-rose-500/30 transition-all duration-300"
