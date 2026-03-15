@@ -447,29 +447,27 @@
                 </div>
             </div>
 
-        <div class="w-full overflow-hidden mb-6">
-            <div class="flex overflow-x-auto hide-scroll-bar pb-4">
-                <div class="flex flex-nowrap gap-4 md:gap-6 px-1">
-                    @foreach ($categories ?? [] as $cat)
-                        <div class="flex-shrink-0 w-20 md:w-24 group">
-                            <a href="{{ route('shop.categories.show', $cat->slug) }}" class="flex flex-col items-center justify-center gap-2">
-                                <div class="flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden shadow-sm group-hover:shadow-md transition-all group-hover:scale-105 border border-gray-100 dark:border-slate-700"
-                                    style="background-color: {{ $cat->bg_color ?? '#f3f4f6' }};">
-                                    @if (!empty($cat->image))
-                                        <img src="{{ \App\Helpers\CurrencyHelper::imageUrl($cat->image) }}" alt="category"
-                                            class="w-full h-full object-cover" />
-                                    @else
-                                        <i data-lucide="{{ $cat->icon ?? 'grid-2x2' }}"
-                                            class="w-8 h-8 text-gray-700 dark:text-gray-300"></i>
-                                    @endif
-                                </div>
-                                <span class="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300 text-center w-full px-1 line-clamp-2 leading-tight">
-                                    {{ $isAr ? $cat->name_ar ?? $cat->name_en : $cat->name_en ?? $cat->name_ar }}
-                                </span>
-                            </a>
-                        </div>
-                    @endforeach
-                </div>
+        <div class="w-full mb-8">
+            <div class="flex flex-wrap items-start justify-center gap-y-8 gap-x-4 md:gap-x-10 px-2">
+                @foreach ($categories ?? [] as $cat)
+                    <div class="group">
+                        <a href="{{ route('shop.categories.show', $cat->slug) }}" class="flex flex-col items-center justify-center gap-3">
+                            <div class="flex items-center justify-center w-16 h-16 md:w-24 md:h-24 rounded-full overflow-hidden shadow-sm group-hover:shadow-lg transition-all group-hover:scale-110 border-2 border-white dark:border-slate-700"
+                                style="background-color: {{ $cat->bg_color ?? '#f3f4f6' }};">
+                                @if (!empty($cat->image))
+                                    <img src="{{ \App\Helpers\CurrencyHelper::imageUrl($cat->image) }}" alt="category"
+                                        class="w-full h-full object-cover" />
+                                @else
+                                    <i data-lucide="{{ $cat->icon ?? 'grid-2x2' }}"
+                                        class="w-8 h-8 md:w-12 md:h-12 text-gray-700 dark:text-gray-300"></i>
+                                @endif
+                            </div>
+                            <span class="text-xs md:text-base font-bold text-gray-800 dark:text-gray-200 text-center max-w-[80px] md:max-w-[100px] line-clamp-2 leading-tight">
+                                {{ $isAr ? $cat->name_ar ?? $cat->name_en : $cat->name_en ?? $cat->name_ar }}
+                            </span>
+                        </a>
+                    </div>
+                @endforeach
             </div>
         </div>
 
