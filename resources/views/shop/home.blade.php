@@ -3,6 +3,7 @@
 
 @push('head')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <style>
 
  #heroCarousel.hero-carousel {
@@ -198,31 +199,32 @@
             </div>
         </div>
 
-        <div class="overflow-hidden">
-           
-
-            <div class="swiper categories-swiper">
-                <div class="swiper-wrapper">
-                    @foreach ($categories ?? [] as $cat)
-                        <div class="swiper-slide flex flex-col items-center gap-2 text-center w-24 md:w-28">
-                            <a href="{{ route('shop.categories.show', $cat->slug) }}">
-                                <div class="flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full bg-gray-100 dark:bg-slate-800 overflow-hidden"
-                                    style="background-color: {{ $cat->bg_color ?? '#f3f4f6' }};">
-                                    @if (!empty($cat->image))
-                                        <img src="{{ asset('storage/' . $cat->image) }}" alt="category"
-                                            class="w-full h-full object-cover" />
-                                    @else
-                                        <i data-lucide="{{ $cat->icon ?? 'grid-2x2' }}"
-                                            class="w-8 h-8 text-gray-700 dark:text-gray-200"></i>
-                                    @endif
-                                </div>
-                                <span
-                                    class="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300">{{ $isAr ? $cat->name_ar ?? $cat->name_en : $cat->name_en ?? $cat->name_ar }}</span>
-                            </a>
-                        </div>
-                    @endforeach
-                </div>
+        <div class="mt-6 mb-8 relative group/categories">
+            <!-- Scroll Container -->
+            <div id="categories-scroll-container" class="flex flex-nowrap justify-start gap-4 md:gap-6 w-full overflow-x-auto hide-scrollbar pb-2 px-4 md:px-12 snap-x snap-mandatory scroll-smooth" style="scrollbar-width: none; -ms-overflow-style: none;">
+                @foreach ($categories ?? [] as $cat)
+                    <div class="snap-start flex justify-center w-[72px] sm:w-[84px] md:w-[100px] flex-shrink-0">
+                        <a href="{{ route('shop.categories.show', $cat->slug) }}" class="flex flex-col items-center gap-2 w-full group">
+                            <div class="flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:bg-slate-200 dark:group-hover:bg-slate-700 hover:ring-2 ring-slate-300 dark:ring-slate-600 ring-offset-2 dark:ring-offset-gray-900 border border-transparent">
+                                @if (!empty($cat->image))
+                                    <img src="{{ asset('storage/' . $cat->image) }}" alt="category" class="w-full h-full object-cover pointer-events-none" />
+                                @else
+                                    <i data-lucide="{{ $cat->icon ?? 'grid-2x2' }}" class="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 text-slate-700 dark:text-slate-300 transition-transform duration-300 group-hover:scale-110 pointer-events-none" stroke-width="1.5"></i>
+                                @endif
+                            </div>
+                            <span class="text-[11px] sm:text-xs md:text-sm font-semibold text-slate-800 dark:text-slate-200 w-full text-center whitespace-nowrap overflow-hidden text-ellipsis">{{ $isAr ? $cat->name_ar ?? $cat->name_en : $cat->name_en ?? $cat->name_ar }}</span>
+                        </a>
+                    </div>
+                @endforeach
             </div>
+
+            <!-- Navigation Buttons -->
+            <button type="button" id="categories-prev-btn" class="absolute left-0 md:left-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-8 h-8 md:w-10 md:h-10 bg-white dark:bg-slate-800 rounded-full shadow-md text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 hover:scale-110 transition-all opacity-0 pointer-events-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <button type="button" id="categories-next-btn" class="absolute right-0 md:right-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-8 h-8 md:w-10 md:h-10 bg-white dark:bg-slate-800 rounded-full shadow-md text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 hover:scale-110 transition-all opacity-0 pointer-events-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
         </div>
 
         <div class="overflow-hidden">
@@ -472,65 +474,89 @@
                 @endforelse
             </div>
         </div>
+        @push('scripts')
+            <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Featured products filter animation
+                    var grid = document.getElementById('featured-products-grid');
+                    document.querySelectorAll('.featured-filter-link').forEach(function (link) {
+                        link.addEventListener('click', function (e) {
+                            if (!grid) return;
+                            grid.style.opacity = '0.6';
+                            grid.style.pointerEvents = 'none';
+                            setTimeout(function () {
+                                grid.style.opacity = '';
+                                grid.style.pointerEvents = '';
+                            }, 400);
+                        });
+                    });
+
+
+                    // Initialize Swipers
+                    // Categories Setup
+                    const catScrollContainer = document.getElementById('categories-scroll-container');
+                    const catPrevBtn = document.getElementById('categories-prev-btn');
+                    const catNextBtn = document.getElementById('categories-next-btn');
+
+                    if (catScrollContainer) {
+                        const getScrollAmount = () => catScrollContainer.clientWidth * 0.7;
+
+                        if (catPrevBtn) {
+                            catPrevBtn.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                catScrollContainer.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+                            });
+                        }
+                        if (catNextBtn) {
+                            catNextBtn.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                catScrollContainer.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+                            });
+                        }
+                        
+                        // Hide arrows based on scroll position
+                        const toggleArrows = () => {
+                            const { scrollLeft, scrollWidth, clientWidth } = catScrollContainer;
+                            const isRtl = getComputedStyle(catScrollContainer).direction === 'rtl';
+                            const isAtStart = isRtl ? (scrollLeft >= -5 && scrollLeft <= 0) : (scrollLeft <= 5);
+                            const isAtEnd = isRtl ? (Math.abs(scrollLeft) + clientWidth >= scrollWidth - 5) : (scrollLeft + clientWidth >= scrollWidth - 5);
+                            const hasOverflow = scrollWidth > clientWidth + 2;
+
+                            if (catPrevBtn) {
+                                if (hasOverflow && !isAtStart) {
+                                    catPrevBtn.style.opacity = '1';
+                                    catPrevBtn.style.pointerEvents = 'auto';
+                                } else {
+                                    catPrevBtn.style.opacity = '0';
+                                    catPrevBtn.style.pointerEvents = 'none';
+                                }
+                            }
+
+                            if (catNextBtn) {
+                                if (hasOverflow && !isAtEnd) {
+                                    catNextBtn.style.opacity = '1';
+                                    catNextBtn.style.pointerEvents = 'auto';
+                                } else {
+                                    catNextBtn.style.opacity = '0';
+                                    catNextBtn.style.pointerEvents = 'none';
+                                }
+                            }
+                        };
+                        
+                        catScrollContainer.addEventListener('scroll', toggleArrows);
+                        toggleArrows();
+                        window.addEventListener('resize', toggleArrows);
+                    }
+
+                    // Initialize Swipers if needed
+                    if (typeof Swiper !== 'undefined') {
+                        // Any other swipers...
+                    }
+                });
+            </script>
+        @endpush
     </div>
 </x-shop-layouts.app>
-
-@push('scripts')
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Featured products filter animation
-            var grid = document.getElementById('featured-products-grid');
-            document.querySelectorAll('.featured-filter-link').forEach(function (link) {
-                link.addEventListener('click', function (e) {
-                    if (!grid) return;
-                    grid.style.opacity = '0.6';
-                    grid.style.pointerEvents = 'none';
-                    setTimeout(function () {
-                        grid.style.opacity = '';
-                        grid.style.pointerEvents = '';
-                    }, 400);
-                });
-            });
-
-
-            // Initialize Swipers
-            if (typeof Swiper !== 'undefined') {
-            // Bootstrap Carousel initialization is automatic with data-bs-ride="carousel"
-            // but we can ensure it starts correctly
-            const carouselEl = document.querySelector('#heroCarousel');
-            if (carouselEl && typeof bootstrap !== 'undefined') {
-                new bootstrap.Carousel(carouselEl, {
-                    interval: 3000,
-                    ride: 'carousel',
-                    pause: 'hover'
-                });
-            }
-
-                // Categories Swiper
-                const categoriesSwiperEl = document.querySelector('.categories-swiper');
-                if (categoriesSwiperEl) {
-                    try {
-                        new Swiper('.categories-swiper', {
-                            slidesPerView: 4,
-                            spaceBetween: 20,
-                            freeMode: true,
-                            breakpoints: {
-                                768: {
-                                    slidesPerView: 6,
-                                    spaceBetween: 20,
-                                },
-                                1024: {
-                                    slidesPerView: 8,
-                                    spaceBetween: 20,
-                                },
-                            },
-                        });
-                    } catch (error) {
-                        console.error('Categories Swiper initialization failed:', error);
-                    }
-                }
-            }
-        });
-    </script>
-@endpush
