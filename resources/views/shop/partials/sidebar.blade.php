@@ -111,13 +111,26 @@
     </div>
 
     <div class="p-4 border-t border-gray-200 dark:border-slate-800">
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit" class="w-full flex items-center justify-center gap-2 p-3 bg-gray-100 text-gray-900 dark:bg-slate-800 dark:text-white text-center rounded-lg font-semibold hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors">
-                <i data-lucide="log-out" class="w-5 h-5"></i>
-                <span>{{ $isAr ? 'تسجيل الخروج' : 'Logout' }}</span>
-            </button>
-        </form>
+        @auth
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="w-full flex items-center justify-center gap-2 p-3 bg-gray-100 text-gray-900 dark:bg-slate-800 dark:text-white text-center rounded-lg font-semibold hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors">
+                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                    <span>{{ $isAr ? 'تسجيل الخروج' : 'Logout' }}</span>
+                </button>
+            </form>
+        @else
+            <div class="flex flex-col gap-2">
+                <a href="{{ route('login') }}" class="w-full flex items-center justify-center gap-2 p-3 bg-rose-500 text-white text-center rounded-lg font-semibold hover:bg-rose-600 transition-colors">
+                    <i data-lucide="log-in" class="w-5 h-5"></i>
+                    <span>{{ $isAr ? 'تسجيل الدخول' : 'Login' }}</span>
+                </a>
+                <a href="{{ route('register') }}" class="w-full flex items-center justify-center gap-2 p-3 bg-gray-100 text-gray-900 dark:bg-slate-800 dark:text-white text-center rounded-lg font-semibold hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors">
+                    <i data-lucide="user-plus" class="w-5 h-5"></i>
+                    <span>{{ $isAr ? 'إنشاء حساب' : 'Register' }}</span>
+                </a>
+            </div>
+        @endauth
     </div>
 </nav>
 
@@ -209,12 +222,25 @@
     </div>
 
     <div class="p-4 border-t border-gray-200 dark:border-slate-800">
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit" class="w-full flex items-center justify-center gap-2 p-3 bg-gray-100 text-gray-900 dark:bg-slate-800 dark:text-white text-center rounded-lg font-semibold hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors">
-                <i data-lucide="log-out" class="w-5 h-5"></i>
-                <span>{{ $isAr ? 'تسجيل الخروج' : 'Logout' }}</span>
-            </button>
-        </form>
+        @auth
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="w-full flex items-center justify-center gap-2 p-3 bg-gray-100 text-gray-900 dark:bg-slate-800 dark:text-white text-center rounded-lg font-semibold hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors">
+                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                    <span>{{ $isAr ? 'تسجيل الخروج' : 'Logout' }}</span>
+                </button>
+            </form>
+        @else
+            <div class="flex flex-col gap-2">
+                <a href="{{ route('login') }}" class="w-full flex items-center justify-center gap-2 p-3 bg-rose-500 text-white text-center rounded-lg font-semibold hover:bg-rose-600 transition-colors">
+                    <i data-lucide="log-in" class="w-5 h-5"></i>
+                    <span>{{ $isAr ? 'تسجيل الدخول' : 'Login' }}</span>
+                </a>
+                <a href="{{ route('register') }}" class="w-full flex items-center justify-center gap-2 p-3 bg-gray-100 text-gray-900 dark:bg-slate-800 dark:text-white text-center rounded-lg font-semibold hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors">
+                    <i data-lucide="user-plus" class="w-5 h-5"></i>
+                    <span>{{ $isAr ? 'إنشاء حساب' : 'Register' }}</span>
+                </a>
+            </div>
+        @endauth
     </div>
 </nav>

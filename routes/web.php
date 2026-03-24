@@ -72,6 +72,41 @@ Route::get('/', function () {
     return redirect()->route('dashboard');
 })->name('home');
 
+// Temporary route to seed categories on live server - visit /setup-categories once then remove
+Route::get('/setup-categories', function () {
+    if (! Auth::check() || (Auth::user()->role ?? '') !== 'admin') {
+        abort(403);
+    }
+
+    $cats = [
+        ['name_ar' => 'إلكترونيات',        'name_en' => 'Electronics',        'slug' => 'electronics',       'icon' => 'cpu',         'bg_color' => '#3B82F6'],
+        ['name_ar' => 'ملابس',              'name_en' => 'Clothing',            'slug' => 'clothing',          'icon' => 'tag',         'bg_color' => '#EC4899'],
+        ['name_ar' => 'أدوات منزلية',        'name_en' => 'Home & Kitchen',      'slug' => 'home-kitchen',      'icon' => 'home',        'bg_color' => '#F59E0B'],
+        ['name_ar' => 'رياضة',              'name_en' => 'Sports',              'slug' => 'sports',            'icon' => 'activity',    'bg_color' => '#10B981'],
+        ['name_ar' => 'إكسسوارات',           'name_en' => 'Accessories',         'slug' => 'accessories',       'icon' => 'watch',       'bg_color' => '#8B5CF6'],
+        ['name_ar' => 'عطور ومستحضرات',      'name_en' => 'Beauty & Fragrance',  'slug' => 'beauty-fragrance',  'icon' => 'heart',       'bg_color' => '#F43F5E'],
+        ['name_ar' => 'أجهزة منزلية',         'name_en' => 'Appliances',          'slug' => 'appliances',        'icon' => 'zap',         'bg_color' => '#06B6D4'],
+        ['name_ar' => 'حقائب وشنط',          'name_en' => 'Bags & Luggage',      'slug' => 'bags-luggage',      'icon' => 'shopping-bag', 'bg_color' => '#D97706'],
+        ['name_ar' => 'مكتبية وقرطاسية',     'name_en' => 'Office & Stationery', 'slug' => 'office-stationery', 'icon' => 'edit-3',      'bg_color' => '#64748B'],
+        ['name_ar' => 'ألعاب وترفيه',         'name_en' => 'Toys & Entertainment','slug' => 'toys',              'icon' => 'smile',       'bg_color' => '#EF4444'],
+    ];
+
+    $inserted = 0;
+    foreach ($cats as $cat) {
+        if (! \App\Models\Category::where('slug', $cat['slug'])->exists()) {
+            \App\Models\Category::create($cat);
+            $inserted++;
+        }
+    }
+
+    $total = \App\Models\Category::count();
+    return response()->json([
+        'message' => "Done! Inserted $inserted new categories. Total in DB: $total",
+        'note' => 'Remove this route from web.php after use.',
+    ]);
+})->name('setup.categories');
+
+
 // require __DIR__.'/auth.php';
 
 Route::middleware('guest')->group(function () {

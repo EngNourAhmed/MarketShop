@@ -13,14 +13,14 @@
         @php($suppliers = $suppliers->where('type', $supplierType)->values())
     @endif
     @php($factory = $suppliers->firstWhere('type', 'factory'))
-    @php($primaryImage = !empty($product->image) ? asset('storage/' . $product->image) : asset('apple-touch-icon.png'))
+    @php($primaryImage = \App\Helpers\CurrencyHelper::imageUrl($product->image))
     @php($sortedSuppliers = $suppliers->sortBy(fn($s) => (float) ($s->pivot->price ?? 0))->values())
     @php($minPrice = $sortedSuppliers->isNotEmpty() ? (float) ($sortedSuppliers->first()->pivot->price ?? 0) : (float) ($product->price ?? 0))
     @php($avgRatingVal = (float) ($avgRating ?? 0))
     @php($ratingsCountVal = (int) ($ratingsCount ?? 0))
     @php($userRatingVal = (int) ($userRating ?? 0))
     @php($productImages = collect(($product->images ?? []))->filter()->values())
-    @php($gallery = $productImages->map(fn($p) => asset('storage/' . ltrim((string) $p, '/')))->filter()->values())
+    @php($gallery = $productImages->map(fn($p) => \App\Helpers\CurrencyHelper::imageUrl((string) $p))->filter()->values())
     @php($imageUrl = $gallery->first() ?: $primaryImage)
     @php($factories = ($suppliers ?? collect())->where('type', 'factory')->values())
     @php($unitPrice = $sortedSuppliers->isNotEmpty() ? (float) ($sortedSuppliers->first()->pivot->unit_price ?? $sortedSuppliers->first()->pivot->price ?? 0) : (float) ($product->unit_price ?? 0))
@@ -444,8 +444,8 @@
                             @php($spSupplier = ($sp->suppliers ?? collect())->firstWhere('type', 'vendor'))
                             @php($spFactoryPrice = (float) ($spFactory->pivot->price ?? 0))
                             @php($spSupplierPrice = (float) ($spSupplier->pivot->price ?? 0))
-                            @php($spFactoryUsd = (int) round($spFactoryPrice / $usdRate))
-                            @php($spSupplierUsd = (int) round($spSupplierPrice / $usdRate))
+                            @php($spFactoryUsd = (int) round($spFactoryPrice / max(1, $usdRate ?? 1)))
+                            @php($spSupplierUsd = (int) round($spSupplierPrice / max(1, $usdRate ?? 1)))
                             @php($spFactoryPriceK = $spFactoryPrice >= 1000 ? (string) round($spFactoryPrice / 1000) . 'k' : number_format($spFactoryPrice, 0, '.', ','))
                             @php($spSupplierPriceK = $spSupplierPrice >= 1000 ? (string) round($spSupplierPrice / 1000) . 'k' : number_format($spSupplierPrice, 0, '.', ','))
                             @php($spSuppliersForModal = ($sp->suppliers ?? collect())->map(fn($s) => [
@@ -469,7 +469,7 @@
                                     data-product-id="{{ $sp->id }}"
                                     data-name-en="{{ $sp->name_en ?? $sp->name }}"
                                     data-name-ar="{{ $sp->name_ar ?? $sp->name }}"
-                                    data-image="{{ !empty($sp->image) ? asset('storage/' . $sp->image) : asset('apple-touch-icon.png') }}"
+                                    data-image="{{ \App\Helpers\CurrencyHelper::imageUrl($sp->image) }}"
                                     data-description="{{ $sp->description ?? '' }}"
                                     data-description-ar="{{ $sp->description_ar ?? '' }}"
                                     data-description-en="{{ $sp->description_en ?? '' }}"
@@ -487,7 +487,7 @@
                                     data-supplier-price="{{ (string) ($spSupplier->pivot->price ?? '') }}"
                                     data-pricing-tiers='@json($spPricingTiers)'>
                                     <div class="w-full h-28 rounded-xl overflow-hidden bg-gray-100 border border-gray-200 dark:bg-slate-800/60 dark:border-slate-700">
-                                        <img src="{{ !empty($sp->image) ? asset('storage/' . $sp->image) : asset('apple-touch-icon.png') }}" alt="product" class="w-full h-full object-cover" />
+                                        <img src="{{ \App\Helpers\CurrencyHelper::imageUrl($sp->image) }}" alt="product" class="w-full h-full object-cover" />
                                     </div>
                                     <div class="mt-3 text-sm font-semibold text-gray-900 dark:text-white truncate">{{ $isAr ? ($sp->name_ar ?? $sp->name) : ($sp->name_en ?? $sp->name) }}</div>
                                     <div class="mt-3 space-y-2 text-xs text-gray-700 dark:text-slate-200">

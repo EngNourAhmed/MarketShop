@@ -34,7 +34,7 @@
                 data-product-id="{{ $product->id }}"
                 data-name-en="{{ $product->name_en ?? $product->name }}"
                 data-name-ar="{{ $product->name_ar ?? $product->name }}"
-                data-image="{{ !empty($product->image) ? asset('storage/' . $product->image) : asset('apple-touch-icon.png') }}"
+                data-image="{{ \App\Helpers\CurrencyHelper::imageUrl($product->image) }}"
                 data-description="{{ $product->description ?? '' }}"
                 data-description-ar="{{ $product->description_ar ?? '' }}"
                 data-description-en="{{ $product->description_en ?? '' }}"
@@ -52,7 +52,7 @@
 
                 <div class="w-full h-24 rounded-xl overflow-hidden bg-gray-100 border border-gray-200 dark:bg-slate-800/60 dark:border-slate-700">
                     @if(!empty($product->image))
-                        <img src="{{ asset('storage/' . $product->image) }}" alt="product" class="w-full h-full object-cover" />
+                        <img src="{{ \App\Helpers\CurrencyHelper::imageUrl($product->image) }}" alt="product" class="w-full h-full object-cover" />
                     @else
                         <img src="{{ asset('apple-touch-icon.png') }}" alt="default" class="w-full h-full object-cover" />
                     @endif

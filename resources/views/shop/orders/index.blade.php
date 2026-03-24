@@ -202,7 +202,7 @@
 @forelse(($specialOrders ?? []) as $order)
     @php($imgList = $order->images ? json_decode((string) $order->images, true) : [])
     @php($firstImg = is_array($imgList) && !empty($imgList) ? (string) $imgList[0] : '')
-    @php($imgUrl = $firstImg !== '' ? asset('storage/' . ltrim($firstImg, '/')) : '')
+    @php($imgUrl = $firstImg !== '' ? \App\Helpers\CurrencyHelper::imageUrl($firstImg) : '')
     @php($statusText = (string) ($order->status ?? ''))
     @php($statusLower = mb_strtolower($statusText))
     @php($isSpecialDelivered = $statusLower === 'approved' || str_contains($statusLower, 'تم') || str_contains($statusLower, 'مقبول'))
@@ -270,7 +270,7 @@
                 @php($firstItem = $items->first())
                 @php($product = $firstItem?->product)
                 @php($title = $product ? ($isAr ? ($product->name_ar ?? $product->name) : ($product->name_en ?? $product->name)) : (($isAr ? 'اوردر' : 'Order') . ' ' . ($order->order_code ?? '')))
-                @php($imgUrl = $product && !empty($product->image) ? asset('storage/' . $product->image) : asset('apple-touch-icon.png'))
+                @php($imgUrl = \App\Helpers\CurrencyHelper::imageUrl($product->image ?? null))
                 @php($factory = $product?->suppliers?->firstWhere('type', 'factory'))
                 @php($vendor = $product?->suppliers?->firstWhere('type', 'vendor'))
                 @php($suppliersForModal = ($product?->suppliers ?? collect())->map(fn($s) => [

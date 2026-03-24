@@ -1,0 +1,11 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Route everything through Laravel public/index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ public/$1 [L]
+
+    # Root URL goes through Laravel (handles role-based redirect internally)
+    RewriteRule ^$ public/index.php [L]
+</IfModule>

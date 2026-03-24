@@ -48,7 +48,7 @@
                         @php($product = $item->product)
                         @php($supplierName = optional($item->supplier)->name)
                         @php($title = $isAr ? ($product->name_ar ?? $product->name) : ($product->name_en ?? $product->name))
-                        @php($imageUrl = !empty($product->image) ? asset('storage/' . $product->image) : asset('apple-touch-icon.png'))
+                        @php($imageUrl = \App\Helpers\CurrencyHelper::imageUrl($product->image ?? null))
 
                         <div class="rounded-2xl border border-gray-200 bg-white dark:border-slate-800 dark:bg-slate-900/40 p-4">
                             <div class="flex items-center gap-4">

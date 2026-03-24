@@ -26,12 +26,6 @@
     <!-- <script src="js/shopApi.js"></script> -->
 
     <style>
-        /* A simple style to make the body look like a mobile app screen */
-        body {
-            background-color: #f0f2f5;
-            font-family: 'Inter', sans-serif;
-        }
-
         .dark body {
             background-color: #111827;
         }
@@ -73,6 +67,19 @@
             /* IE and Edge */
             scrollbar-width: none;
             /* Firefox */
+        }
+
+        /* Categories swiper fix */
+        .categories-swiper {
+            overflow: visible !important;
+        }
+        .categories-swiper .swiper-wrapper {
+            align-items: flex-start;
+        }
+        .categories-swiper .swiper-slide {
+            height: auto !important;
+            display: flex;
+            justify-content: center;
         }
 
         .expanding-clone {
@@ -454,39 +461,43 @@
                 </div>
             </div>
 
-            <div class="mb-6 relative">
-                <!-- Scroll Container: wraps into rows, scrolls vertically by page -->
-                <div id="categories-scroll-container"
-                     class="flex flex-wrap justify-start gap-4 md:gap-6 w-full overflow-y-auto hide-scrollbar px-4 md:px-12 scroll-smooth"
-                     style="max-height: 160px; scrollbar-width: none; -ms-overflow-style: none;">
-                    @foreach(($categories ?? []) as $cat)
-                        <div class="flex justify-center w-[72px] sm:w-[84px] md:w-[100px] flex-shrink-0">
-                            <a href="{{ route('shop.categories.show', $cat->slug) }}" class="flex flex-col items-center gap-2 w-full group">
-                                <div class="flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:bg-slate-200 dark:group-hover:bg-slate-700 hover:ring-2 ring-slate-300 dark:ring-slate-600 ring-offset-2 dark:ring-offset-gray-900 border border-transparent">
-                                    @if(!empty($cat->image))
-                                        <img src="{{ asset('storage/' . $cat->image) }}" alt="category" class="w-full h-full object-cover pointer-events-none" />
-                                    @else
-                                        <i data-lucide="{{ $cat->icon ?? 'grid-2x2' }}" class="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 text-slate-700 dark:text-slate-300 transition-transform duration-300 group-hover:scale-110 pointer-events-none" stroke-width="1.5"></i>
-                                    @endif
-                                </div>
-                                <span class="text-[11px] sm:text-xs md:text-sm font-semibold text-slate-800 dark:text-slate-200 w-full text-center whitespace-nowrap overflow-hidden text-ellipsis">{{ $isAr ? ($cat->name_ar ?? $cat->name_en) : ($cat->name_en ?? $cat->name_ar) }}</span>
-                            </a>
-                        </div>
-                    @endforeach
+            <div class="w-full mb-8 relative group/cat-nav">
+                <div class="swiper-container categories-swiper overflow-hidden">
+                    <div class="swiper-wrapper">
+                        @foreach ($categories ?? [] as $cat)
+                            <div class="swiper-slide list-none">
+                                <a href="{{ route('shop.categories.show', $cat->slug) }}" class="flex flex-col items-center justify-center gap-3 group">
+                                    <div class="flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full overflow-hidden transition-all hover:scale-105 bg-slate-100 dark:bg-[#1C2331] border border-slate-200 dark:border-slate-700 shadow-sm group-hover:shadow-md">
+                                        @if (!empty($cat->image))
+                                            <img src="{{ \App\Helpers\CurrencyHelper::imageUrl($cat->image) }}" alt="category"
+                                                class="w-full h-full object-cover pointer-events-none" />
+                                        @else
+                                            <i data-lucide="{{ $cat->icon ?? 'grid-2x2' }}"
+                                                class="w-7 h-7 md:w-10 md:h-10 text-slate-700 dark:text-gray-200" stroke-width="1.5"></i>
+                                        @endif
+                                    </div>
+                                    <span class="text-[11px] sm:text-xs md:text-sm font-semibold text-slate-800 dark:text-slate-200 w-full text-center whitespace-nowrap overflow-hidden text-ellipsis">
+                                        {{ $isAr ? ($cat->name_ar ?? $cat->name_en) : ($cat->name_en ?? $cat->name_ar) }}
+                                    </span>
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
 
                 <!-- Navigation Buttons -->
-                @if(is_countable($categories) && count($categories) > 1)
+                @if(is_countable($categories) && count($categories) > 3)
                     <button type="button" id="categories-prev-btn"
-                            class="absolute left-0 md:left-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-8 h-8 md:w-10 md:h-10 bg-white dark:bg-slate-800 rounded-full shadow-md text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 hover:scale-110 transition-all opacity-40 disabled:opacity-20">
+                            class="absolute -left-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-8 h-8 bg-white/90 dark:bg-slate-800/90 rounded-full shadow-md text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 hover:scale-110 transition-all opacity-0 group-hover/cat-nav:opacity-100 disabled:invisible pointer-events-none">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                     </button>
                     <button type="button" id="categories-next-btn"
-                            class="absolute right-0 md:right-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-8 h-8 md:w-10 md:h-10 bg-white dark:bg-slate-800 rounded-full shadow-md text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 hover:scale-110 transition-all opacity-100">
+                            class="absolute -right-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-8 h-8 bg-white/90 dark:bg-slate-800/90 rounded-full shadow-md text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 hover:scale-110 transition-all opacity-0 group-hover/cat-nav:opacity-100 disabled:invisible pointer-events-none">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                     </button>
                 @endif
             </div>
+        </div>
 
 
             <!-- Best Sellers Section -->
@@ -506,7 +517,7 @@
                                     data-product-id="{{ $product->id }}"
                                     data-name-en="{{ $product->name_en ?? $product->name }}"
                                     data-name-ar="{{ $product->name_ar ?? $product->name }}"
-                                    data-image="{{ !empty($product->image) ? asset('storage/' . $product->image) : asset('apple-touch-icon.png') }}"
+                                    data-image="{{ \App\Helpers\CurrencyHelper::imageUrl($product->image) }}"
                                     data-description="{{ $product->description ?? '' }}"
                                     data-description-ar="{{ $product->description_ar ?? '' }}"
                                     data-description-en="{{ $product->description_en ?? '' }}"
@@ -520,7 +531,7 @@
                                     data-supplier-price="{{ (string) ($supplier->pivot->price ?? '') }}">
                                         <div class="flex items-center justify-center h-24 md:h-32 mb-2 font-semibold text-gray-500 bg-gray-200 rounded-lg dark:bg-gray-700 dark:text-gray-400 overflow-hidden">
                                             @if(!empty($product->image))
-                                                <img src="{{ asset('storage/' . $product->image) }}" alt="product" class="w-full h-full object-cover" />
+                                                <img src="{{ \App\Helpers\CurrencyHelper::imageUrl($product->image) }}" alt="product" class="w-full h-full object-cover" />
                                             @else
                                                 <img src="{{ asset('apple-touch-icon.png') }}" alt="default" class="w-full h-full object-cover" />
                                             @endif
@@ -559,7 +570,7 @@
                                     data-product-id="{{ $product->id }}"
                                     data-name-en="{{ $product->name_en ?? $product->name }}"
                                     data-name-ar="{{ $product->name_ar ?? $product->name }}"
-                                    data-image="{{ !empty($product->image) ? asset('storage/' . $product->image) : asset('apple-touch-icon.png') }}"
+                                    data-image="{{ \App\Helpers\CurrencyHelper::imageUrl($product->image) }}"
                                     data-description="{{ $product->description ?? '' }}"
                                     data-description-ar="{{ $product->description_ar ?? '' }}"
                                     data-description-en="{{ $product->description_en ?? '' }}"
@@ -573,7 +584,7 @@
                                     data-supplier-price="{{ (string) ($supplier->pivot->price ?? '') }}">
                                     <div class="flex items-center justify-center h-24 md:h-32 mb-2 font-semibold text-gray-500 bg-gray-200 rounded-lg dark:bg-gray-700 dark:text-gray-400 overflow-hidden">
                                         @if(!empty($product->image))
-                                            <img src="{{ asset('storage/' . $product->image) }}" alt="product" class="w-full h-full object-cover" />
+                                    <img src="{{ \App\Helpers\CurrencyHelper::imageUrl($product->image) }}" alt="product" class="w-full h-full object-cover" />
                                         @else
                                             <img src="{{ asset('apple-touch-icon.png') }}" alt="default" class="w-full h-full object-cover" />
                                         @endif
@@ -780,50 +791,43 @@
             },
         });
 
-        // Categories: vertical page-scroll via prev/next buttons
-        const catScrollContainer = document.getElementById('categories-scroll-container');
-        const catPrevBtn = document.getElementById('categories-prev-btn');
-        const catNextBtn = document.getElementById('categories-next-btn');
-
-        if (catScrollContainer) {
-            // Update button opacity based on scroll position
-            const updateCatBtns = () => {
-                const atTop    = catScrollContainer.scrollTop <= 2;
-                const atBottom = catScrollContainer.scrollTop + catScrollContainer.clientHeight >= catScrollContainer.scrollHeight - 2;
-                const hasOverflow = catScrollContainer.scrollHeight > catScrollContainer.clientHeight + 2;
-
-                if (catPrevBtn) {
-                    catPrevBtn.style.opacity        = (!hasOverflow || atTop)    ? '0.25' : '1';
-                    catPrevBtn.style.pointerEvents  = (!hasOverflow || atTop)    ? 'none' : 'auto';
+        // Categories Swiper with custom navigation
+        new Swiper('.categories-swiper', {
+            slidesPerView: 4.2,
+            spaceBetween: 12,
+            freeMode: true,
+            observer: true,
+            observeParents: true,
+            navigation: {
+                nextEl: '#categories-next-btn',
+                prevEl: '#categories-prev-btn',
+            },
+            breakpoints: {
+                480: { slidesPerView: 5, spaceBetween: 14 },
+                640: { slidesPerView: 5.5, spaceBetween: 16 },
+                768: { slidesPerView: 6, spaceBetween: 18 },
+                1024: { slidesPerView: 7, spaceBetween: 20 },
+                1280: { slidesPerView: 10, spaceBetween: 24 },
+            },
+            on: {
+                init: function () {
+                    lucide.createIcons();
+                },
+                lock: function() {
+                    // Hide buttons if not enough slides
+                    const prevBtn = document.getElementById('categories-prev-btn');
+                    const nextBtn = document.getElementById('categories-next-btn');
+                    if(prevBtn) prevBtn.classList.add('hidden');
+                    if(nextBtn) nextBtn.classList.add('hidden');
+                },
+                unlock: function() {
+                    const prevBtn = document.getElementById('categories-prev-btn');
+                    const nextBtn = document.getElementById('categories-next-btn');
+                    if(prevBtn) prevBtn.classList.remove('hidden');
+                    if(nextBtn) nextBtn.classList.remove('hidden');
                 }
-                if (catNextBtn) {
-                    catNextBtn.style.opacity        = (!hasOverflow || atBottom) ? '0.25' : '1';
-                    catNextBtn.style.pointerEvents  = (!hasOverflow || atBottom) ? 'none' : 'auto';
-                }
-            };
-
-            const pageHeight = () => catScrollContainer.clientHeight; // one row height
-
-            if (catPrevBtn) {
-                catPrevBtn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    catScrollContainer.scrollBy({ top: -pageHeight(), behavior: 'smooth' });
-                });
-            }
-            if (catNextBtn) {
-                catNextBtn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    catScrollContainer.scrollBy({ top: pageHeight(), behavior: 'smooth' });
-                });
-            }
-
-            catScrollContainer.addEventListener('scroll', updateCatBtns);
-            window.addEventListener('resize', updateCatBtns);
-            // Run after layout settles
-            setTimeout(updateCatBtns, 100);
-        }
+            },
+        });
 
 
         // --- Popups & Country Selector Logic ---

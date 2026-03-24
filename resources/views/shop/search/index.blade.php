@@ -67,7 +67,7 @@
                         <a href="{{ route('shop.products.show', $product->id) }}" class="p-4 rounded-2xl bg-white border border-gray-200 shadow-sm hover:bg-gray-50 dark:bg-slate-900 dark:border-slate-800 dark:hover:bg-slate-800/60">
                             <div class="w-full h-24 rounded-xl overflow-hidden bg-gray-100 border border-gray-200 dark:bg-slate-800/60 dark:border-slate-700">
                                 @if(!empty($product->image))
-                                    <img src="{{ asset('storage/' . $product->image) }}" alt="product" class="w-full h-full object-cover" />
+                                    <img src="{{ \App\Helpers\CurrencyHelper::imageUrl($product->image) }}" alt="product" class="w-full h-full object-cover" />
                                 @else
                                     <img src="{{ asset('apple-touch-icon.png') }}" alt="default" class="w-full h-full object-cover" />
                                 @endif
